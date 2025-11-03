@@ -1,0 +1,13 @@
+<div *ngFor="let question of questions">
+  <div>{{ question.question }}</div>
+  <div *ngFor="let option of question.options">
+    <input
+      type="radio"
+      name="q{{ question.question }}"
+      (change)="onAnswerChange(question.question, option)"
+      [value]="option"
+    />
+    {{ option }}
+  </div>
+</div>
+<button (click)="onSubmit()">Submit</button>

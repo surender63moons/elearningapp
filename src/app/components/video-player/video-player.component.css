@@ -1,0 +1,192 @@
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  color: #fff;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+
+}
+
+.video-element {
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  display: block;
+  outline: none;
+}
+
+.video-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  padding: 20px;
+  color: white;
+  transition: opacity 0.3s;
+}
+
+.progress-bar-container {
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #007bff;
+  border-radius: 3px;
+  transition: width 0.1s;
+}
+
+.controls-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.control-btn {
+  color: white;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.time-display {
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.volume-slider {
+  width: 80px;
+}
+
+.progress-info {
+  background: #f8f9fa;
+  padding: 15px 20px;
+  border-radius: 0 0 12px 12px;
+}
+
+.progress-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9em;
+  color: #6c757d;
+}
+
+.progress-percentage {
+  font-weight: 600;
+  color: #007bff;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .video-container {
+    border-radius: 8px;
+    margin: 10px;
+  }
+  
+  .video-element {
+    max-height: 50vh;
+  }
+  
+  .video-controls {
+    padding: 15px;
+  }
+  
+  .control-group {
+    gap: 10px;
+  }
+  
+  .volume-slider {
+    width: 60px;
+  }
+  
+  .progress-info {
+    padding: 10px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .video-element {
+    max-height: 40vh;
+  }
+  
+  .controls-bottom {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .control-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .time-display {
+    font-size: 0.8em;
+  }
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

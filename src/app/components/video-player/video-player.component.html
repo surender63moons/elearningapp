@@ -1,0 +1,99 @@
+
+<div class="video-container"  [class.loading]="isLoading">
+   <div #playerContainer  class="video-wrapper" ></div>      
+  <div *ngIf="!isLoading" class="progress-info mt-3">
+    <div class="progress-stats">
+      <span class="progress-percentage">{{ progress | number:'1.0-0' }}% Complete</span>
+      <span class="time-remaining">
+        {{ (duration - currentTime) | timeFormat }} remaining
+      </span>
+    </div>
+  </div>
+
+</div>
+
+<div class="video-container" [class.loading]="isLoading" *ngIf="!isyoutube">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading video...</span>
+    </div>
+    <p class="mt-2">Loading video content...</p>
+  </div>
+
+  <!--<div *ngIf="!isLoading && videofiletype=='VIDEO_URL' && isyoutube" class="video-wrapper" >
+   <iframe 
+  *ngIf="youtubeEmbedUrl" 
+  [src]="youtubeEmbedUrl" 
+   class="video-element"
+  frameborder="0" 
+  allowfullscreen>
+</iframe>   
+  <div #playerContainer ></div>  
+  <div [id]="playerId" ></div>
+</div> -->
+  <!-- Video Player -->
+
+  <div *ngIf="!isLoading && (videofiletype=='VIDEO' || videofiletype=='VIDEO_URL') && (!isyoutube)" class="video-wrapper">
+    <video #videoPlayer 
+           [src]="videoUrl"
+           (timeupdate)="onTimeUpdate()"
+           (loadedmetadata)="onLoadedMetadata()"
+           (play)="isPlaying = true"
+           (pause)="isPlaying = false"           
+           class="video-element"
+           preload="metadata"
+           playsinline>
+      Your browser does not support the video tag.
+    </video>
+
+    <!-- <app-mcq-test *ngIf="isVideoCompleted"></app-mcq-test> -->
+    <!-- Custom Video Controls -->
+    <div class="video-controls" *ngIf="!isLoading && (videofiletype=='VIDEO' || videofiletype=='VIDEO_URL') && (!isyoutube)">
+      <div class="progress-bar-container" (click)="seekTo($event)">
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="progress"></div>
+        </div>
+      </div>
+
+      <div class="controls-bottom" *ngIf="!isLoading && (videofiletype=='VIDEO' || videofiletype=='VIDEO_URL') && (!isyoutube)">
+        <div class="control-group left-controls">
+          <button class="btn control-btn" (click)="togglePlay()">
+            <!-- play/pause -->
+             <i class="fa" [class.fa-play]="!isPlaying" [class.fa-pause]="isPlaying"></i> 
+          </button>
+          
+          <div class="time-display">
+            {{ currentTime | timeFormat }} / {{ duration | timeFormat }}
+          </div>
+        </div>
+
+        <div class="control-group right-controls" *ngIf="!isLoading && (videofiletype=='VIDEO' || videofiletype=='VIDEO_URL') && (!isyoutube)">
+          <div class="volume-control">
+            <button class="btn control-btn">
+              <i class="fa fa-volume-up"></i>
+            </button>
+            <input type="range" class="volume-slider" 
+                   min="0" max="1" step="0.1"
+                   [(ngModel)]="volume" 
+                   (input)="setVolume(volume)">
+          </div>
+          
+          <button class="btn control-btn" (click)="toggleFullscreen()">
+            <i class="fa fa-expand"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress Info -->
+  <div *ngIf="!isLoading" class="progress-info mt-3">
+    <div class="progress-stats">
+      <span class="progress-percentage">{{ progress | number:'1.0-0' }}% Complete</span>
+      <span class="time-remaining">
+        {{ (duration - currentTime) | timeFormat }} remaining
+      </span>
+    </div>
+  </div>
+</div>

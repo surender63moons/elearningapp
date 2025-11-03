@@ -1,0 +1,28 @@
+<div class="player-wrap">
+  <video #videoTag
+         appVideoPlayer
+         [src]="src"
+         [poster]="poster"
+         [autoplay]="false"
+         [controls]="false"
+         (ready)="onReady($event)"
+         (timeUpdate)="onTimeUpdate($event)"
+         (bufferUpdate)="onBufferUpdate($event)"
+         (ended)="onEnded()"
+         (playing)="onPlay()"
+         (paused)="onPause()"
+         playsinline
+         class="vjs-default-skin"></video>
+
+  <!-- Custom Controls -->
+  <div class="controls">
+    <button class="btn" (click)="togglePlayPause()">{{ isPlaying ? 'Pause' : 'Play' }}</button>
+
+    <div #progressBar class="progress" (click)="onProgressClick($event)" (mousedown)="startDrag($event)">
+      <div class="progress-buffer" [style.width.%]="(duration ? (bufferedEnd / duration * 100) : 0)"></div>
+      <div class="progress-bar" [style.width.%]="(duration ? (currentTime / duration * 100) : 0)"></div>
+    </div>
+
+    <div class="time">{{ formatTime(currentTime) }} / {{ formatTime(duration) }}</div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+.player-wrap { position: relative; max-width: 900px; margin: 0 auto; }
+video { width: 100%; height: auto; background: black; }
+.controls { position: absolute; left: 8px; right: 8px; bottom: 8px; display:flex; align-items:center; gap:10px; }
+.progress { flex: 1; height: 6px; background: rgba(255,255,255,0.25); cursor: pointer; border-radius: 3px; overflow: hidden; position: relative; }
+.progress-buffer { position: absolute; top:0; left:0; height:100%; background: rgba(255,255,255,0.4); z-index: 1; }
+.progress-bar { position: absolute; top:0; left:0; height:100%; background: rgba(255,255,255,0.85); z-index: 2; }
+.btn { background: rgba(0,0,0,0.6); color: white; border: none; padding: 6px 10px; border-radius: 4px; }
+.time { color: white; font-size: 12px; }

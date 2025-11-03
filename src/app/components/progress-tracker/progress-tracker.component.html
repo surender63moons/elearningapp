@@ -1,0 +1,213 @@
+<div class="progress-tracker-container">
+  <div class="container-fluid">
+    <!-- Header -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+          <h2 class="mb-0">
+            <i class="fa fa-chart-line text-primary mr-2"></i>
+            Learning Progress
+          </h2>
+          <button *ngIf="selectedCourseId" class="btn btn-outline-secondary" 
+                  (click)="backToOverview()">
+            <i class="fa fa-arrow-left mr-1"></i> Back to Overview
+          </button>
+        </div>
+        <p class="text-muted">Track your learning journey and achievements</p>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading progress...</span>
+      </div>
+      <p class="mt-2">Loading your progress data...</p>
+    </div>
+
+    <!-- Progress Overview -->
+    <div *ngIf="!isLoading && !selectedCourseId" class="row">
+      <!-- Progress Stats -->
+      <div class="col-lg-3 col-md-6 mb-4" *ngIf="progressStats">
+        <div class="card bg-primary text-white">
+          <div class="card-body text-center">
+            <h3>{{ calculateTotalProgress() }}%</h3>
+            <p class="mb-0">Overall Progress</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4" *ngIf="progressStats">
+        <div class="card bg-success text-white">
+          <div class="card-body text-center">
+            <h3>{{ progressStats.completedCourses }}/{{ progressStats.totalCourses }}</h3>
+            <p class="mb-0">Courses Completed</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4" *ngIf="progressStats">
+        <div class="card bg-info text-white">
+          <div class="card-body text-center">
+            <h3>{{ formatTime(progressStats.totalTimeSpent) }}</h3>
+            <p class="mb-0">Total Time Spent</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4" *ngIf="progressStats">
+        <div class="card bg-warning text-white">
+          <div class="card-body text-center">
+            <h3>{{ progressStats.weeklyProgress?.length || 0 }}</h3>
+            <p class="mb-0">Active Weeks</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course Progress List -->
+      <div class="col-12 mb-4">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="fa fa-book mr-2"></i>Course Progress
+            </h5>
+          </div>
+          <div class="card-body">
+            <div *ngIf="courseProgress.length === 0" class="text-center py-4">
+              <p class="text-muted">No progress data available. Start learning to track your progress!</p>
+            </div>
+
+            <div *ngFor="let course of courseProgress" class="progress-item mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="mb-0 cursor-pointer" (click)="viewCourseDetails(course.courseId)">
+                  {{ course.courseTitle }}
+                </h6>
+                <span class="badge badge-{{ getProgressColor(course.overallProgress) }}">
+                  {{ course.overallProgress }}%
+                </span>
+              </div>
+              
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar bg-{{ getProgressColor(course.overallProgress) }}" 
+                     [style.width.%]="course.overallProgress"></div>
+              </div>
+              
+              <div class="d-flex justify-content-between mt-1">
+                <small class="text-muted">
+                  {{ course.completedContents }}/{{ course.totalContents }} contents completed
+                </small>
+                <small class="text-muted">
+                  {{ formatTime(course.timeSpent) }}
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="fa fa-clock mr-2"></i>Recent Activity
+            </h5>
+          </div>
+          <div class="card-body">
+            <div *ngIf="recentProgress.length === 0" class="text-center py-2">
+              <p class="text-muted">No recent activity</p>
+            </div>
+
+            <div *ngFor="let activity of recentProgress" class="activity-item d-flex align-items-center mb-2">
+              <div class="activity-icon mr-3">
+                <i class="fa fa-play-circle text-primary"></i>
+              </div>
+              <div class="activity-content flex-grow-1">
+                <div class="d-flex justify-content-between">
+                  <strong>{{ activity.contentTitle }}</strong>
+                  <small class="text-muted">{{ activity.lastAccessed | date:'short' }}</small>
+                </div>
+                <div class="progress" style="height: 4px;">
+                  <div class="progress-bar bg-success" [style.width.%]="activity.progressPercentage"></div>
+                </div>
+                <small class="text-muted">
+                  {{ activity.progressPercentage }}% complete • 
+                  {{ formatTime(activity.timeSpent) }} spent
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Detail View -->
+    <div *ngIf="!isLoading && selectedCourseId && detailedProgress" class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+              <i class="fa fa-book mr-2"></i>
+              {{ detailedProgress.courseTitle }} - Progress Details
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="row mb-4">
+              <div class="col-md-3 text-center">
+                <div class="progress-circle mx-auto" 
+                     [style.background]="'conic-gradient(#007bff ' + detailedProgress.overallProgress + '%, #e9ecef 0)'">
+                  <span class="progress-text">{{ detailedProgress.overallProgress }}%</span>
+                </div>
+                <p class="mt-2 mb-0">Course Progress</p>
+              </div>
+              
+              <div class="col-md-9">
+                <div class="row text-center">
+                  <div class="col-4">
+                    <h4>{{ detailedProgress.completedContents }}/{{ detailedProgress.totalContents }}</h4>
+                    <small class="text-muted">Contents Completed</small>
+                  </div>
+                  <div class="col-4">
+                    <h4>{{ formatTime(detailedProgress.timeSpent) }}</h4>
+                    <small class="text-muted">Time Spent</small>
+                  </div>
+                  <div class="col-4">
+                    <h4>{{ detailedProgress.lastAccessed | date:'mediumDate' }}</h4>
+                    <small class="text-muted">Last Accessed</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Module Progress -->
+            <div *ngFor="let module of detailedProgress.modules" class="module-progress mb-4">
+              <h6 class="module-title">{{ module.moduleTitle }}</h6>
+              <div class="progress mb-2" style="height: 6px;">
+                <div class="progress-bar" [style.width.%]="module.moduleProgress"></div>
+              </div>
+              <div class="module-contents">
+                <div *ngFor="let content of module.contents" class="content-item d-flex align-items-center mb-2 p-2 border rounded">
+                  <i class="fa mr-3" 
+                     [class.fa-play-circle]="content.contentType === 'VIDEO'"
+                     [class.fa-file-pdf]="content.contentType === 'PDF'"
+                     [class.fa-question-circle]="content.contentType === 'QUIZ'"
+                     [class.text-success]="content.completed"
+                     [class.text-muted]="!content.completed"></i>
+                  <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between">
+                      <span [class.text-muted]="!content.completed">{{ content.contentTitle }}</span>
+                      <small class="text-muted">{{ content.progressPercentage }}%</small>
+                    </div>
+                    <div class="progress" style="height: 3px;">
+                      <div class="progress-bar bg-success" [style.width.%]="content.progressPercentage"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

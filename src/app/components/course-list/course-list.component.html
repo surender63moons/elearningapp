@@ -1,0 +1,50 @@
+<div class="thumbnail-gallery">
+  <div *ngFor="let course of Courses" class="thumbnail">
+    <img [src]="course.thumbnailUrl" [alt]="course.title" [title]="course.title" class="thumb-img" (click)="showmodule(course.id)"/>
+    <p>{{course.title}}</p>
+  </div>
+</div>
+                      <div class="col-md-12 mt-3">
+                    <table  >
+                      <thead>
+                        <tr>
+                          <th width="10%">module Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          <ng-container *ngIf="Coursemodules.length==0">
+                              <tr>
+                                      <td>No Data Found</td>
+                              </tr>
+                      </ng-container>
+                  <ng-container *ngIf="Coursemodules.length!=0">
+                          <tr *ngFor="let module of Coursemodules">
+                              <td style="border: 1px solid !important" title="click to show content list" (click)="showcontentlist(module)">{{module.description}}</td>
+                          </tr>
+                  </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+
+                      <div class="col-md-12 mt-3">
+                    <table  >
+                      <thead>
+                        <tr>
+                          <th width="10%">Content Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          <ng-container *ngIf="contentlist.length==0">
+                              <tr>
+                                      <td>No Data Found</td>
+                              </tr>
+                      </ng-container>
+                  <ng-container *ngIf="contentlist.length!=0">
+                          <tr *ngFor="let content of contentlist">
+                              <td style="border: 1px solid !important" title="click to play video" (click)="showplayer(content)">{{content.title}}</td>
+                          </tr>
+                  </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+
