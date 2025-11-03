@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git url: 'https://github.com/risksolution25/elearningapp.git', branch: 'master'
+        git url: 'https://github.com/surender63moons/elearningapp.git', branch: 'master'
    //     Checkout scm
       }
     }
