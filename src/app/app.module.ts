@@ -36,6 +36,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ToastrModule } from "ngx-toastr";
 import { VideoPlayerDirective } from './directives/video-player.directive';
 import { VideoPlayerAllComponent } from './components/video-player-all/video-player-all.component';
+import { DynamicPlayerComponent } from './components/video-player/dynamic-player.component';
 import { HomeComponent } from './components/home/home.component';
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { HomeComponent } from './components/home/home.component';
     McqTestComponent,
     VideoPlayerDirective,
     VideoPlayerAllComponent,
+    DynamicPlayerComponent,
     HomeComponent
   ],
   imports: [
