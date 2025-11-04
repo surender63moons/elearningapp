@@ -17,9 +17,10 @@ pipeline {
        bat 'npm ci'
       }
     }
-    stage('Build') {
+    stage('Build Angular and Docker Image') {
       steps {
        bat 'npm run build-prod'
+       bat 'docker build -t elearningapp-image .'
       }
     }
     stage('Archive Artifacts') {
